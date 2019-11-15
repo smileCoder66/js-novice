@@ -1,0 +1,12 @@
+{
+  "name": "advance",
+  "version": "1.0.0",
+  "description": "```\r 还记得那些年你我一起奋斗的岁月......\r 咳咳,这份文档搜集了部分个人觉得工作中用的较多的,\r 写给刚入门javascript的小伙伴进阶ES语法,\r 希望对你有所帮助,可能写的不太详细 不懂的话可以留言或者网上去搜\r ```",
+  "main": "advance.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
