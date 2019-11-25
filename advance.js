@@ -234,7 +234,7 @@ jjg.getName() //250,250
   console.log(arr1) //[undefined,undefined,'hasVal',undefined]
   //默认每次return undefined
 
-  //利用此特性 -- 比如编写jsx时-->
+  //利用此返回特性 -- 比如编写jsx时-->
   // {
   //   arr.map(item=><p>{item}</p>)
   // }
