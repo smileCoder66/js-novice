@@ -91,9 +91,15 @@ const objHasFn = {
 
 //7.arguments:JS的一个内置对象,类似数组除了length属性和索引元素之外没有任何Array属性
 function arg() {
-  console.log(arguments)
+  console.log(arguments) 
+  //转数组
+  var args1 = Array.prototype.slice.call(arguments)
+  var args2 = [].slice.call(arguments)
+  // ES5
+  const args3 = Array.from(arguments)
+  const args4 = [...arguments]
 }
-arg(1, 2, 3) // [1,2,3,callee]
+arg(1, 2, 3)// arguments:[1,2,3,callee]
 
 const argArrow = () => {
   console.log(arguments)
@@ -200,107 +206,110 @@ jjg.getName() //250,250
 
 
 // 11.Object.assign(target, ...sources)
-  let obs = {
-    a: 1,
-    b: 2
-  }
-  let newOb = Object.assign(obs, {
+let obs = {
+  a: 1,
+  b: 2
+}
+let newOb = Object.assign(obs, {
+  b: 4,
+  c: 5
+})
+let newOb1 = {
+  ...obs,
+  ...{
     b: 4,
     c: 5
-  })
-  let newOb1 = {
-    ...obs,
-    ...{
-      b: 4,
-      c: 5
-    }
   }
-  console.log(newOb) //{a:1,b:4,c:5} 
-  //有则替换,无则添加 展开运算符同样可以->
+}
+console.log(newOb) //{a:1,b:4,c:5} 
+//有则替换,无则添加 展开运算符同样可以->
 
 // 12.Array.from()
-  //类数组转为数组
-  let set = new Set([1, 2, 3, 4]) //object
-  let cArr = Array.from(set) //array
+//类数组转为数组
+let set = new Set([1, 2, 3, 4]) //object
+let cArr = Array.from(set) //array
 
 // 13.遍历
-  //Array.map ->返回一个新数组 内部每次循环都会返回值到函数体内部
-  let arr = [1, 2, 3, 4]
-  let arr1 = arr.map((item, index) => {
-    if (item == 3) {
-      return 'hasVal'
-    }
-  })
-  console.log(arr1) //[undefined,undefined,'hasVal',undefined]
-  //默认每次return undefined
+//Array.map ->返回一个新数组 内部每次循环都会返回值到函数体内部
+let arr = [1, 2, 3, 4]
+let arr1 = arr.map((item, index) => {
+  if (item == 3) {
+    return 'hasVal'
+  }
+})
+console.log(arr1) //[undefined,undefined,'hasVal',undefined]
+//默认每次return undefined
 
-  //利用此返回特性 -- 比如编写jsx时-->
-  // {
-  //   arr.map(item=><p>{item}</p>)
-  // }
-  // 能够比较方便得到循环生成的标签
+//利用此返回特性 -- 比如编写jsx时-->
+// {
+//   arr.map(item=><p>{item}</p>)
+// }
+// 能够比较方便得到循环生成的标签
 
 // 14.Array.prototype.includes,filter
 //检测数组可替代indexOf 因为indexOf无法检测NaN
-  [1, 2, NaN].includes(NaN) //返回boolean为true
-  //filter 过滤返回数组
-  let a = [1, 2, 3, 4, 5]
-  let b = a.filter(item => item > 3)
-  //b -> [4,5]
+[1, 2, NaN].includes(NaN) //返回boolean为true
+//filter 过滤返回数组
+let a = [1, 2, 3, 4, 5]
+let b = a.filter(item => item > 3)
+//b -> [4,5]
 
 // 15.Object.values/Object.entries
-  let obj = {
-    a: 1,
-    b: 2,
-    c: 3
-  }
-  Object.values(obj).forEach(value => console.log(value)) //1 2 3
-  //对比Object.keys() 返回对象自身可迭代属性的数组
-  //用for...of
-  for (let value of Object.values(obj)) {
-    console.log(value) // 1 2 3
-  }
+let obj = {
+  a: 1,
+  b: 2,
+  c: 3
+}
+Object.values(obj).forEach(value => console.log(value)) //1 2 3
+//对比Object.keys() 返回对象自身可迭代属性的数组
+//用for...of
+for (let value of Object.values(obj)) {
+  console.log(value) // 1 2 3
+}
 
-  let b = Object.entries(obj) // 返回一个数组(以键值对数组存储)
-  //b -> [['a',1],['b',2]...]
-  //for of
-  for (let [key, value] of Object.entries(obj)) {
-    console.log(`${key},${value}`)
-  }
+let b = Object.entries(obj) // 返回一个数组(以键值对数组存储)
+//b -> [['a',1],['b',2]...]
+//for of
+for (let [key, value] of Object.entries(obj)) {
+  console.log(`${key},${value}`)
+}
 
 // 17.promise async await
-  /*
-    Promise
-    -- 异步处理 队列化
-    三个状态 pending[待定]初始 fulfilled[实现]成功 rejected[被否决]失败
-    从 Pending->fullilled || Pending->rejected 
-    结束状态
-  */
-  let wait1 = new Promise(resolve => {
+/*
+  Promise
+  -- 异步处理 队列化
+  三个状态 pending[待定]初始 fulfilled[实现]成功 rejected[被否决]失败
+  从 Pending->fullilled || Pending->rejected 
+  结束状态
+*/
+let wait1 = new Promise(resolve => {
+  setTimeout(() => {
+    resolve('wait1')
+  }, 2000);
+})
+
+let wait2 = wait1.then(res => {
+  console.log(res) //两秒后拿到'wait1'
+})
+
+// async await
+// 异步代码同步化 解决回调地狱
+const get = () => {
+  return new Promise(resolve => {
     setTimeout(() => {
-      resolve('wait1')
+      resolve('abcd')
     }, 2000);
   })
+}
 
-  let wait2 = wait1.then(res => {
-    console.log(res) //两秒后拿到'wait1'
-  })
+async function getwait() {
+  let data = await get('abcd')
+  console.log(data)
+}
 
-  // async await
-  // 异步代码同步化 解决回调地狱
-    const get = () => {
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve('abcd')
-        }, 2000);
-      })
-    }
-
-    async function getwait() {
-      let data = await get('abcd')
-      console.log(data)
-    }
-
-    getwait();
+getwait();
 
 //try catch && then().catch()
+
+
+// 
