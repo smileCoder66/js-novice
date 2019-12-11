@@ -91,7 +91,7 @@ const objHasFn = {
 
 //7.arguments:JS的一个内置对象,类似数组除了length属性和索引元素之外没有任何Array属性
 function arg() {
-  console.log(arguments) 
+  console.log(arguments)
   //转数组
   var args1 = Array.prototype.slice.call(arguments)
   var args2 = [].slice.call(arguments)
@@ -99,7 +99,7 @@ function arg() {
   const args3 = Array.from(arguments)
   const args4 = [...arguments]
 }
-arg(1, 2, 3)// arguments:[1,2,3,callee]
+arg(1, 2, 3) // arguments:[1,2,3,callee]
 
 const argArrow = () => {
   console.log(arguments)
@@ -304,12 +304,24 @@ const get = () => {
 
 async function getwait() {
   let data = await get('abcd')
-  console.log(data)
+  return data
 }
 
 getwait();
 
 //try catch && then().catch()
+let wait2 = wait1.then(res => {
+  console.log(res) //两秒后拿到'wait1'
+}).catch(err => {
+  console.log(err)
+})
+
+try {
+  let data = await getwait()
+  console.log(data)
+} catch (err) {
+  console.log(err)
+}
 
 
 // 
